@@ -174,17 +174,16 @@ int ElementUtilities::GetLineHeight(Element* element)
 		return Math::Round(line_height_property->value.Get< float >() * inch * (1.0f / 72.0f));
 	case Property::PC:
 		return Math::Round(line_height_property->value.Get< float >() * inch * (1.0f / 6.0f));
-	}
-
-	else if (line_height_property->unit == Property::GSP)
+	case Property::GSP:
 		return Math::Round(line_height_property->value.Get< float >() * Rocket::Core::GetRenderInterface()->GetPixelScale());
+	}
 
 	// Values based on pixels-per-inch.
 	if (line_height_property->unit & Property::PPI_UNIT)
 	{
 		float inch = line_height_property->value.Get< float >() * Rocket::Core::GetRenderInterface()->GetPixelsPerInch();
 
-		if (line_height_property->unit & Property::IN) // inch
+		if (line_height_property->unit & Property::INCH) // inch
 			return inch;
 		if (line_height_property->unit & Property::CM) // centimeter
 			return inch / 2.54f;
