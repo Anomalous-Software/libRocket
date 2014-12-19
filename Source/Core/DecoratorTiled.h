@@ -110,6 +110,7 @@ public:
 		int texture_index;
 		Vector2f texcoords[2];
 		bool texcoords_absolute[2][2];
+		Colourb color;
 
 		mutable TileDataMap data;
 

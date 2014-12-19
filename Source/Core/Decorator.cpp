@@ -119,6 +119,9 @@ float Decorator::ResolveProperty(const PropertyDictionary& properties, const Str
 
 	if (property->unit & Property::NUMBER || property->unit & Property::PX)
 		return property->value.Get< float >();
+
+	if (property->unit & Property::GSP)
+		return property->value.Get< float >() * Rocket::Core::GetRenderInterface()->GetPixelScale();
     
     // Values based on pixels-per-inch.
 	if (property->unit & Property::PPI_UNIT)

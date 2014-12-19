@@ -42,6 +42,8 @@ const float DOUBLE_CLICK_TIME = 0.5f;
 
 Context::Context(const String& name) : name(name), dimensions(0, 0), mouse_position(0, 0), clip_origin(-1, -1), clip_dimensions(-1, -1)
 {
+	zoomLevel = 1.0f;
+
 	instancer = NULL;
 
 	// Initialise this to NULL; this will be set in Rocket::Core::CreateContext().
@@ -263,6 +265,20 @@ ElementDocument* Context::LoadDocumentFromMemory(const String& string)
 	// Open the stream based on the string contents.
 	StreamMemory* stream = new StreamMemory((byte*)string.CString(), string.Length());
 	stream->SetSourceURL("[document from memory]");
+
+	// Load the document from the stream.
+	ElementDocument* document = LoadDocument(stream);
+
+	stream->RemoveReference();
+
+	return document;
+}
+
+ElementDocument* Context::LoadDocumentFromMemory(const String& string, const String& fakePath)
+{
+	// Open the stream based on the string contents.
+	StreamMemory* stream = new StreamMemory((byte*)string.CString(), string.Length());
+	stream->SetSourceURL(fakePath);
 
 	// Load the document from the stream.
 	ElementDocument* document = LoadDocument(stream);
@@ -1038,6 +1054,11 @@ void Context::UpdateHoverChain(const Dictionary& parameters, const Dictionary& d
 	hover_chain.swap(new_hover_chain);
 }
 
+Element* Context::FindElementAtPoint(const Vector2f& point, const Element* ignore_element)
+{
+	return GetElementAtPoint(point, ignore_element);
+}
+
 // Returns the youngest descendent of the given element which is under the given point in screen coodinates.
 Element* Context::GetElementAtPoint(const Vector2f& point, const Element* ignore_element, Element* element)
 {
@@ -1227,6 +1248,18 @@ void Context::OnReferenceDeactivate()
 	{
 		instancer->ReleaseContext(this);
 	}
+}
+
+/// Get the scale factor for sp values for this context.
+float Context::GetZoomLevel()
+{
+	return zoomLevel;
+}
+
+/// Set the value that will be used to compute sp values for this context.
+void Context::SetZoomLevel(float value)
+{
+	zoomLevel = value;
 }
 
 }

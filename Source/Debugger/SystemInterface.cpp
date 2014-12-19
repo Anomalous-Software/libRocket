@@ -58,6 +58,11 @@ int SystemInterface::TranslateString(Core::String& translated, const Core::Strin
 	return application_interface->TranslateString(translated, input);
 }
 
+void SystemInterface::JoinPath(Core::String& translated_path, const Core::String& document_path, const Core::String& path)
+{
+	return application_interface->JoinPath(translated_path, document_path, path);
+}
+
 // Log the specified message.
 bool SystemInterface::LogMessage(Core::Log::Type type, const Core::String& message)
 {
@@ -77,6 +82,5 @@ void SystemInterface::DeactivateKeyboard()
 {
 	application_interface->DeactivateKeyboard();
 }
-
 }
 }

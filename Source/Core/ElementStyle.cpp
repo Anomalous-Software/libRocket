@@ -289,6 +289,22 @@ void ElementStyle::RemoveProperty(const String& name)
 	}
 }
 
+void ElementStyle::ClearLocalProperties()
+{
+	if (local_properties == NULL)
+		return;
+
+	PropertyNameList properties;
+	PropertyMap::const_iterator end = local_properties->GetProperties().end();
+	for(PropertyMap::const_iterator i = local_properties->GetProperties().begin(); i != end; ++i)
+	{
+		properties.insert((*i).first);
+	}
+	delete local_properties;
+	local_properties = new PropertyDictionary();
+	DirtyProperties(properties);
+}
+
 // Returns one of this element's properties.
 const Property* ElementStyle::GetProperty(const String& name)
 {
@@ -414,16 +430,16 @@ float ElementStyle::ResolveProperty(const String& name, float base_value)
 			}
 			else
 			{
-				Rocket::Core::Element* parent = element->GetParentNode();
-				if (parent == NULL)
-					return 0;
+			Rocket::Core::Element* parent = element->GetParentNode();
+			if (parent == NULL)
+				return 0;
 
-				if (GetLocalProperty(FONT_SIZE) == NULL)
-					return parent->ResolveProperty(FONT_SIZE, 0);
+			if (GetLocalProperty(FONT_SIZE) == NULL)
+				return parent->ResolveProperty(FONT_SIZE, 0);
 
-				// The base value for font size is always the height of *this* element's parent's font.
-				base_value = parent->ResolveProperty(FONT_SIZE, 0);
-			}
+			// The base value for font size is always the height of *this* element's parent's font.
+			base_value = parent->ResolveProperty(FONT_SIZE, 0);
+		}
 		}
 
 		if (property->unit & Property::PERCENT)
@@ -445,15 +461,20 @@ float ElementStyle::ResolveProperty(const String& name, float base_value)
 				return property->value.Get< float >() * base_value;
 			else
 				return property->value.Get< float >() * ElementUtilities::GetFontSize(element->GetOwnerDocument());
-		}
+	}
 	}
 
 	if (property->unit & Property::NUMBER || property->unit & Property::PX)
 	{
-		return property->value.Get< float >();
+		return property->value.Get< float >() * element->ComputeZoomLevel();
 	}
-    
-    // Values based on pixels-per-inch.
+
+	if (property->unit & Property::GSP)
+	{
+		return property->value.Get< float >() * Rocket::Core::GetRenderInterface()->GetPixelScale();
+	}
+
+	// Values based on pixels-per-inch.
 	if (property->unit & Property::PPI_UNIT)
 	{
 		float inch = property->value.Get< float >() * element->GetRenderInterface()->GetPixelsPerInch();
@@ -565,19 +586,19 @@ void ElementStyle::DirtyEmProperties()
 
 	if (!em_properties)
 	{
-		// Check if any of these are currently em-relative. If so, dirty them.
+	// Check if any of these are currently em-relative. If so, dirty them.
 		em_properties = new PropertyNameList;
-		for (PropertyNameList::const_iterator list_iterator = properties.begin(); list_iterator != properties.end(); ++list_iterator)
-		{
-			// Skip font-size; this is relative to our parent's em, not ours.
-			if (*list_iterator == FONT_SIZE)
-				continue;
+	for (PropertyNameList::const_iterator list_iterator = properties.begin(); list_iterator != properties.end(); ++list_iterator)
+	{
+		// Skip font-size; this is relative to our parent's em, not ours.
+		if (*list_iterator == FONT_SIZE)
+			continue;
 
-			// Get this property from this element. If this is em-relative, then add it to the list to
-			// dirty.
-			if (element->GetProperty(*list_iterator)->unit == Property::EM)
+		// Get this property from this element. If this is em-relative, then add it to the list to
+		// dirty.
+		if (element->GetProperty(*list_iterator)->unit == Property::EM)
 				em_properties->insert(*list_iterator);
-		}
+	}
 	}
 
 	if (!em_properties->empty())
@@ -705,7 +726,7 @@ void ElementStyle::DirtyInheritedProperties(const PropertyNameList& properties)
 			inherited_properties.insert(*i);
 			if (!clear_em_properties && em_properties != NULL && em_properties->find((*i)) != em_properties->end()) {
 				clear_em_properties = true;
-			}
+	}
 		}
 	}
 

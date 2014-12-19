@@ -33,7 +33,7 @@
 namespace Rocket {
 namespace Core {
 
-void DocumentHeader::MergeHeader(const DocumentHeader& header)
+void DocumentHeader::MergeHeader(const DocumentHeader& header, bool append)
 {
 	// Copy the title across if ours is empty
 	if (title.Empty())
@@ -43,23 +43,34 @@ void DocumentHeader::MergeHeader(const DocumentHeader& header)
 		source = header.source;
 
 	// Combine internal data	
-	rcss_inline.insert(rcss_inline.end(), header.rcss_inline.begin(), header.rcss_inline.end());	
+	StringList::iterator inlineRcssPos = append ? rcss_inline.end() : rcss_inline.begin();
+	rcss_inline.insert(inlineRcssPos, header.rcss_inline.begin(), header.rcss_inline.end());	
+	StringList::iterator inlineScriptsPos = append ? scripts_inline.end() : scripts_inline.begin();
 	scripts_inline.insert(scripts_inline.end(), header.scripts_inline.begin(), header.scripts_inline.end());
 	
 	// Combine external data, keeping relative paths
-	MergePaths(template_resources, header.template_resources, header.source);
-	MergePaths(rcss_external, header.rcss_external, header.source);
-	MergePaths(scripts_external, header.scripts_external, header.source);
+	MergePaths(template_resources, header.template_resources, header.source, true); //Always append templates
+	MergePaths(rcss_external, header.rcss_external, header.source, append);
+	MergePaths(scripts_external, header.scripts_external, header.source, append);
 }
 
-void DocumentHeader::MergePaths(StringList& target, const StringList& source, const String& source_path)
+void DocumentHeader::MergePaths(StringList& target, const StringList& source, const String& source_path, bool append)
 {
+	StringList::iterator insertPos;
+	if(append)
+	{
+		insertPos = target.end();
+	}
+	else
+	{
+		insertPos = target.begin();
+	}
+	std::insert_iterator<StringList> insertIter(target, insertPos);
 	for (size_t i = 0; i < source.size(); i++)
 	{
 		String joined_path;
 		Rocket::Core::GetSystemInterface()->JoinPath(joined_path, source_path.Replace("|", ":"), source[i].Replace("|", ":"));
-
-		target.push_back(joined_path.Replace(":", "|"));
+		*insertIter = joined_path.Replace(":", "|");
 	}
 }
 

@@ -30,6 +30,8 @@
 #include "WidgetTextInputSingleLine.h"
 #include "WidgetTextInputSingleLinePassword.h"
 #include "../../Include/Rocket/Controls/ElementFormControlInput.h"
+#include <Rocket/Controls/ElementForm.h>
+#include <Rocket/Core/Input.h>
 
 namespace Rocket {
 namespace Controls {
@@ -96,9 +98,36 @@ void InputTypeText::OnPropertyChange(const Core::PropertyNameList& changed_prope
 }
 
 // Checks for necessary functional changes in the control as a result of the event.
-void InputTypeText::ProcessEvent(Core::Event& ROCKET_UNUSED_PARAMETER(event))
+void InputTypeText::ProcessEvent(Core::Event& event)
 {
-	ROCKET_UNUSED(event);
+	if (event == "keydown" &&
+		!element->IsDisabled())
+	{
+		Core::Input::KeyIdentifier key_identifier = (Core::Input::KeyIdentifier) event.GetParameter< int >("key_identifier", 0);
+		if(key_identifier == Rocket::Core::Input::KI_RETURN) //Try to submit form on Return pressed
+		{
+			Core::Element* parent = element->GetParentNode();
+			while (parent)
+			{
+				ElementForm* form = dynamic_cast< ElementForm* >(parent);
+				if (form != NULL)
+				{
+					Rocket::Core::String autoSubmitId = form->GetAttribute<Rocket::Core::String>("autosubmitid", "submit");
+					Rocket::Core::Element* submit = form->GetElementById(autoSubmitId);
+					if(submit != NULL)
+					{
+						Rocket::Core::Dictionary params;
+						submit->DispatchEvent("click", params);
+					}
+					return;
+				}
+				else
+				{
+					parent = parent->GetParentNode();
+				}
+			}
+		}
+	}
 }
 
 // Sizes the dimensions to the element's inherent size.

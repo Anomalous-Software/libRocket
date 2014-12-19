@@ -70,7 +70,9 @@ public:
 		PPI_UNIT = INCH | CM | MM | PT | PC,
 
 		REM = 1 << 13,				// number suffixed by 'rem'; fetch as < float >
-		RELATIVE_UNIT = EM | REM | PERCENT
+		RELATIVE_UNIT = EM | REM | PERCENT,
+
+		GSP = 1 << 14,				// number suffixed by 'gsp'; fetch as < float >; Multiplied by the render interface scale factor only, does not use context zoom
 	};
 
 	Property();

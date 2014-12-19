@@ -69,7 +69,7 @@ void ElementDocument::ProcessHeader(const DocumentHeader* document_header)
 
 	// Construct a new header and copy the template details across
 	DocumentHeader header;
-	header.MergePaths(header.template_resources, document_header->template_resources, document_header->source);
+	header.MergePaths(header.template_resources, document_header->template_resources, document_header->source, true);
 
 	// Merge in any templates, note a merge may cause more templates to merge
 	for (size_t i = 0; i < header.template_resources.size(); i++)
@@ -77,13 +77,13 @@ void ElementDocument::ProcessHeader(const DocumentHeader* document_header)
 		Template* merge_template = TemplateCache::LoadTemplate(URL(header.template_resources[i]).GetURL());	
 
 		if (merge_template)
-			header.MergeHeader(*merge_template->GetHeader());
+			header.MergeHeader(*merge_template->GetHeader(), merge_template->AppendHead());
 		else
 			Log::Message(Log::LT_WARNING, "Template %s not found", header.template_resources[i].CString());
 	}
 
 	// Merge the document's header last, as it is the most overriding.
-	header.MergeHeader(*document_header);
+	header.MergeHeader(*document_header, true);
 
 	// Set the title to the document title.
 	title = document_header->title;

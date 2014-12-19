@@ -60,6 +60,12 @@ public:
 	/// @return Number of translations that occured.
 	virtual int TranslateString(Core::String& translated, const Core::String& input);
 
+	/// Joins the path of an RML or RCSS file with the path of a resource specified within the file.
+	/// @param[out] translated_path The joined path.
+	/// @param[in] document_path The path of the source document (including the file name).
+	/// @param[in] path The path of the resource specified in the document.
+	virtual void JoinPath(Core::String& translated_path, const Core::String& document_path, const Core::String& path);
+
 	/// Log the specified message.
 	/// @param[in] type Type of log message, ERROR, WARNING, etc.
 	/// @param[in] message Message to log.

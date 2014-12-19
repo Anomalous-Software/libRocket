@@ -119,7 +119,7 @@ StyleSheet* StyleSheetFactory::GetStyleSheet(const StringList& sheets)
 	for (size_t i = 0; i < sheets.size(); i++)
 	{		
 		URL path(sheets[i]);
-		combined_key += path.GetFileName();
+		combined_key += path.GetPathedFileName() + "|";
 	}
 
 	// Look up the sheet definition in the cache.

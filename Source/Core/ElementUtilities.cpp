@@ -162,7 +162,7 @@ int ElementUtilities::GetLineHeight(Element* element)
 		return Math::Round(line_height_property->value.Get< float >() * line_height * 0.01f);
 	case Property::PX:
 		// A px measurement.
-		return Math::Round(line_height_property->value.Get< float >());
+		return Math::Round(line_height_property->value.Get< float >() * element->ComputeZoomLevel());
 	case Property::INCH:
 		// Values based on pixels-per-inch.
 		return Math::Round(line_height_property->value.Get< float >() * inch);
@@ -174,6 +174,26 @@ int ElementUtilities::GetLineHeight(Element* element)
 		return Math::Round(line_height_property->value.Get< float >() * inch * (1.0f / 72.0f));
 	case Property::PC:
 		return Math::Round(line_height_property->value.Get< float >() * inch * (1.0f / 6.0f));
+	}
+
+	else if (line_height_property->unit == Property::GSP)
+		return Math::Round(line_height_property->value.Get< float >() * Rocket::Core::GetRenderInterface()->GetPixelScale());
+
+	// Values based on pixels-per-inch.
+	if (line_height_property->unit & Property::PPI_UNIT)
+	{
+		float inch = line_height_property->value.Get< float >() * Rocket::Core::GetRenderInterface()->GetPixelsPerInch();
+
+		if (line_height_property->unit & Property::IN) // inch
+			return inch;
+		if (line_height_property->unit & Property::CM) // centimeter
+			return inch / 2.54f;
+		if (line_height_property->unit & Property::MM) // millimeter
+			return inch / 25.4f;
+		if (line_height_property->unit & Property::PT) // point
+			return inch / 72.0f;
+		if (line_height_property->unit & Property::PC) // pica
+			return inch / 6.0f;
 	}
 
 	return 0;

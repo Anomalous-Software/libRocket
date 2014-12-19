@@ -101,6 +101,10 @@ public:
 	/// @param[in] string The string containing the document RML.
 	/// @return The loaded document, or NULL if no document was loaded. The document is returned with a reference owned by the caller.
 	ElementDocument* LoadDocumentFromMemory(const String& string);
+		/// Load a document into the context.
+	/// @param[in] string The string containing the document RML.
+	/// @return The loaded document, or NULL if no document was loaded. The document is returned with a reference owned by the caller.
+	ElementDocument* LoadDocumentFromMemory(const String& string, const String& fakePath);
 	/// Unload the given document.
 	/// @param[in] document The document to unload.
 	void UnloadDocument(ElementDocument* document);
@@ -225,12 +229,22 @@ public:
 	/// @param[in] instancer The context's instancer.
 	void SetInstancer(ContextInstancer* instancer);
 
+	// Public version to find an element by a point
+	Element* FindElementAtPoint(const Vector2f& point, const Element* ignore_element = NULL);
+
+	/// Get the scale factor for sp values for this context.
+	float GetZoomLevel();
+
+	/// Set the value that will be used to compute sp values for this context.
+	void SetZoomLevel(float value);
+
 protected:
 	virtual void OnReferenceDeactivate();
 
 private:
 	String name;
 	Vector2i dimensions;
+	float zoomLevel;
 
 	ContextInstancer* instancer;
 

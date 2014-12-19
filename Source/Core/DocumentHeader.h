@@ -62,10 +62,10 @@ public:
 
 	/// Merges the specified header with this one
 	/// @param header Header to merge
-	void MergeHeader(const DocumentHeader& header);
+	void MergeHeader(const DocumentHeader& header, bool append);
 
 	/// Merges paths from one string list to another, preserving the base_path
-	void MergePaths(StringList& target, const StringList& source, const String& base_path);
+	void MergePaths(StringList& target, const StringList& source, const String& base_path, bool append);
 };
 
 }

@@ -44,6 +44,7 @@ void DecoratorTiledInstancer::RegisterTileProperty(const String& name, bool regi
 	RegisterProperty(String(32, "%s-s-end", name.CString()), "1").AddParser("number");
 	RegisterProperty(String(32, "%s-t-begin", name.CString()), "0").AddParser("number");
 	RegisterProperty(String(32, "%s-t-end", name.CString()), "1").AddParser("number");
+	RegisterProperty(String(32, "%s-color", name.CString()), "#ffffff").AddParser(COLOR);
 	RegisterShorthand(String(32, "%s-s", name.CString()), String(64, "%s-s-begin, %s-s-end", name.CString(), name.CString()));
 	RegisterShorthand(String(32, "%s-t", name.CString()), String(64, "%s-t-begin, %s-t-end", name.CString(), name.CString()));
 
@@ -72,6 +73,10 @@ void DecoratorTiledInstancer::GetTileProperties(DecoratorTiled::Tile& tile, Stri
 	const Property* texture_property = properties.GetProperty(String(32, "%s-src", name.CString()));
 	texture_name = texture_property->Get< String >();
 	rcss_path = texture_property->source;
+
+	const Property* color_property = properties.GetProperty(String(32, "%s-color", name.CString()));
+	if(color_property != NULL)
+		tile.color = color_property->value.Get< Colourb >();
 }
 
 // Loads a single texture coordinate value from the properties.

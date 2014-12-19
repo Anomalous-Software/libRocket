@@ -116,6 +116,10 @@ public:
 	/// @returns The number of pixels per inch. The default implementation returns 100.
 	virtual float GetPixelsPerInch();
 
+	/// Returns the amount to scale spx by.
+	/// @returns The amount to scale spx by. The default implementation returns 1.0.
+	virtual float GetPixelScale();
+
 	/// Called when this render interface is released.
 	virtual void Release();
 

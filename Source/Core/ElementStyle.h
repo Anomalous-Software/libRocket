@@ -95,6 +95,9 @@ public:
 	/// the style sheet.
 	/// @param[in] name The name of the local property definition to remove.
 	void RemoveProperty(const String& name);
+	/// Clears all local property overrides on the element; the values will revert to those defined in
+	/// the style sheet.
+	void ClearLocalProperties();
 	/// Returns one of this element's properties. If this element is not defined this property, or a parent cannot
 	/// be found that we can inherit the property from, the default value will be returned.
 	/// @param[in] name The name of the property to fetch the value for.

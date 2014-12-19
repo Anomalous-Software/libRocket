@@ -326,6 +326,13 @@ void WidgetTextInput::ProcessEvent(Core::Event& event)
 			}
 			break;
 
+			case Core::Input::KI_A:
+			{
+				if(ctrl)
+					SelectAll();
+			}
+			break;
+
 			case Core::Input::KI_C:
 			{
                 if (ctrl)
@@ -982,6 +989,22 @@ void WidgetTextInput::SetKeyboardActive(bool active)
 			system->DeactivateKeyboard();
 		}
 	}
+}
+
+void WidgetTextInput::SelectAll()
+{
+	selection_begin_index = 0;
+	int num_characters = text_element->GetText().Length();
+	selection_length = num_characters;
+	
+	cursor_line_index = (int) lines.size() - 1;
+	cursor_character_index = lines[cursor_line_index].content_length;
+	absolute_cursor_index = num_characters;
+	edit_index = num_characters;
+
+	UpdateCursorPosition();
+
+	FormatElement();
 }
 	
 }

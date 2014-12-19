@@ -48,6 +48,7 @@ static Vector2f oriented_texcoords[6][2] = {{Vector2f(0, 0), Vector2f(1, 1)},
 													   {Vector2f(0, 1), Vector2f(1, 0)}};
 
 DecoratorTiled::Tile::Tile()
+	:color(255, 255, 255)
 {
 	texture_index = -1;
 	repeat_mode = STRETCH;
@@ -244,7 +245,7 @@ void DecoratorTiled::Tile::GenerateGeometry(std::vector< Vertex >& vertices, std
 			tile_position.x = surface_origin.x + (float) tile_dimensions.x * x;
 			tile_size.x = (float) (x < num_tiles[0] - 1 ? tile_dimensions.x : final_tile_dimensions.x);
 
-			GeometryUtilities::GenerateQuad(new_vertices, new_indices, tile_position, tile_size, Colourb(255, 255, 255), tile_texcoords[0], tile_texcoords[1], index_offset);
+			GeometryUtilities::GenerateQuad(new_vertices, new_indices, tile_position, tile_size, color, tile_texcoords[0], tile_texcoords[1], index_offset);
 			new_vertices += 4;
 			new_indices += 6;
 			index_offset += 4;

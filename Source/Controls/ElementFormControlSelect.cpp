@@ -166,5 +166,68 @@ bool ElementFormControlSelect::GetIntrinsicDimensions(Rocket::Core::Vector2f& in
 	return true;
 }
 
+// Returns the RML of this element
+void ElementFormControlSelect::GetRML(Rocket::Core::String& content)
+{
+	// First we start the open tag, add the attributes then close the open tag.
+	// Then comes the children in order, then we add our close tag.
+	content.Append("<");
+	content.Append(GetTagName());
+
+	int index = 0;
+	Rocket::Core::String name;
+	Rocket::Core::String value;
+	while (IterateAttributes(index, name, value))	
+	{
+		size_t length = name.Length() + value.Length() + 8;
+		Rocket::Core::String attribute(length, " %s=\"%s\"", name.CString(), value.CString());
+		content.Append(attribute);
+	}
+
+	int numOptions = GetNumOptions();
+	if (numOptions > 0)
+	{
+		int selectedIndex = GetSelection();
+		content.Append(">");
+
+		for(int i = 0; i < numOptions; ++i)
+		{
+			SelectOption* option = GetOption(i);
+			content.Append("<option");
+			if(!option->GetValue().Empty())
+			{
+				content.Append(" value=\"");
+				content.Append(option->GetValue());
+				content.Append("\"");
+			}
+			if(i == selectedIndex)
+			{
+				content.Append(" selected=\"\"");
+			}
+
+			Rocket::Core::String innerRml;
+			option->GetElement()->GetInnerRML(innerRml);
+			if(innerRml.Empty())
+			{
+				content.Append("/>");
+			}
+			else
+			{
+				content.Append(">");
+				content.Append(innerRml);
+				content.Append("</option>");
+			}
+		}
+
+		content.Append("</");
+		content.Append(GetTagName());
+		content.Append(">");
+	}
+	else
+	{
+		content.Append(" />");
+	}
+}
+
 }
 }

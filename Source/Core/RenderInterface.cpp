@@ -110,6 +110,11 @@ float RenderInterface::GetPixelsPerInch()
 	return 100;
 }
 
+float RenderInterface::GetPixelScale()
+{
+	return 1.0f;
+}
+
 // Called when this render interface is released.
 void RenderInterface::Release()
 {

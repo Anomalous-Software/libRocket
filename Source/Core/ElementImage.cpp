@@ -69,6 +69,11 @@ bool ElementImage::GetIntrinsicDimensions(Vector2f& _dimensions)
 	else
 		dimensions.y = (float) texture.GetDimensions(GetRenderInterface()).y;
 
+	//Apply any scaling to the intrinsic dimensions
+	float scale = ComputeZoomLevel();
+	dimensions.x *= scale;
+	dimensions.y *= scale;
+
 	// Return the calculated dimensions. If this changes the size of the element, it will result in
 	// a 'resize' event which is caught below and will regenerate the geometry.
 	_dimensions = dimensions;

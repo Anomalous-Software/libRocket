@@ -37,6 +37,7 @@ namespace Core {
 Template::Template()
 {
 	body = NULL;
+	appendHead = true;
 }
 
 Template::~Template()
@@ -48,6 +49,11 @@ Template::~Template()
 const String& Template::GetName() const
 {
 	return name;
+}
+
+const String& Template::GetContent() const
+{
+	return content;
 }
 
 bool Template::Load(Stream* stream)
@@ -93,6 +99,8 @@ bool Template::Load(Stream* stream)
 			name = attribute_value;
 		if (attribute_name == "content")
 			content = attribute_value;
+		if(attribute_name == "appendHead")
+			TypeConverter< String, bool >::Convert(attribute_value, appendHead);
 	}
 
 	// Create a stream around the header, parse it and store it
@@ -136,6 +144,11 @@ Element* Template::ParseTemplate(Element* element)
 const DocumentHeader* Template::GetHeader()
 {
 	return &header;
+}
+
+bool Template::AppendHead()
+{
+	return appendHead;
 }
 
 }

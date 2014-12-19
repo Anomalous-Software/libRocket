@@ -97,6 +97,8 @@ protected:
 	/// Forces an internal layout.
 	virtual void OnLayout();
 
+	virtual void GetRML(Rocket::Core::String& content);
+
 	/// Returns true to mark this element as replaced.
 	/// @param[out] intrinsic_dimensions Set to the arbitrary dimensions of 128 x 16 just to give this element a size. Resize with the 'width' and 'height' properties.
 	/// @return True.

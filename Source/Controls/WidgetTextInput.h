@@ -111,6 +111,8 @@ protected:
 	/// Dispatches a change event to the widget's element.
 	void DispatchChangeEvent(bool linebreak = false);
 
+	void SelectAll();
+
 private:
 	/// Moves the cursor along the current line.
 	/// @param[in] x How far to move the cursor.

@@ -507,6 +507,12 @@ void Element::RemoveProperty(const String& name)
 	style->RemoveProperty(name);
 }
 
+// Removes all local property overrides on the element
+void Element::ClearLocalProperties()
+{
+	style->ClearLocalProperties();
+}
+
 // Sets a local property override on the element to a pre-parsed value.
 bool Element::SetProperty(const String& name, const Property& property)
 {
@@ -1729,6 +1735,11 @@ void Element::ProcessEvent(Event& event)
 	}
 }
 
+void Element::GetElementRML(String& content)
+{
+	GetRML(content);
+}
+
 void Element::GetRML(String& content)
 {
 	// First we start the open tag, add the attributes then close the open tag.
@@ -1967,6 +1978,23 @@ void Element::DirtyStructure()
 
 		children[i]->DirtyStructure();
 	}
+}
+
+/// Compute the zoom level applied to this element, Accounts for global scale factor and context zoom.
+float Element::ComputeZoomLevel()
+{
+	float zoom = 1.0f;
+	RenderInterface* ri = GetRenderInterface();
+	if(ri != NULL)
+	{
+		zoom = ri->GetPixelScale();
+	}
+	Context* context = GetContext();
+	if(context != NULL)
+	{
+		zoom *= context->GetZoomLevel();
+	}
+	return zoom;
 }
 
 }

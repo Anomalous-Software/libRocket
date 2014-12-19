@@ -54,6 +54,9 @@ public:
 	/// Get the ID of the template
 	const String& GetName() const;
 
+	/// Get the name of the content element for the template
+	const String& GetContent() const;
+
 	/// Parse the template into the given element
 	/// @param element Element to parse into
 	/// @returns The element to continue the parse from
@@ -62,11 +65,14 @@ public:
 	/// Get the template header
 	const DocumentHeader* GetHeader();
 
+	bool AppendHead();
+
 private:
 	String name;
 	String content;
 	DocumentHeader header;
 	StreamMemory* body;
+	bool appendHead;
 
 	String ReadAttribute(const String& string);
 	const String& FindTag(const String& tag, const String& string, bool closing_tag = false);
