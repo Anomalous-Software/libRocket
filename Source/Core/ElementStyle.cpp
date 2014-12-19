@@ -378,7 +378,7 @@ float ElementStyle::ResolveProperty(const Property* property, float base_value)
 
 	if (property->unit & Property::NUMBER || property->unit & Property::PX)
 	{
-		return property->value.Get< float >();
+		return property->value.Get< float >() * element->ComputeZoomLevel();
 	}
 
 	// Values based on pixels-per-inch.
@@ -396,6 +396,11 @@ float ElementStyle::ResolveProperty(const Property* property, float base_value)
 			return inch * (1.0f / 72.0f);
 		if (property->unit & Property::PC) // pica
 			return inch * (1.0f / 6.0f);
+	}
+
+	if (property->unit & Property::GSP)
+	{
+		return Math::Round(property->value.Get< float >() * Rocket::Core::GetRenderInterface()->GetPixelScale());
 	}
 
 	// We're not a numeric property; return 0.
