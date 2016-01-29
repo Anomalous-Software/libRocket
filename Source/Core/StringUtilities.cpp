@@ -66,7 +66,7 @@ void StringUtilities::ExpandString(StringList& string_list, const String& string
 			start_ptr = NULL;
 		}
 		// Otherwise if its not white space or we're in quote mode, advance the pointers
-		else if (!isspace(*ptr) || quote)
+		else if (!isspace(static_cast<unsigned char>(*ptr)) || quote)
 		{
 			if (!start_ptr)
 				start_ptr = ptr;
