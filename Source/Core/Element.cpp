@@ -1755,6 +1755,7 @@ void Element::GetRML(String& content)
 		size_t length = name.Length() + value.Length() + 8;
 		String attribute(length, " %s=\"%s\"", name.CString(), value.CString());
 		content.Append(attribute);
+		value = " "; //Work around blank attributes getting old values
 	}
 
 	if (HasChildNodes())
