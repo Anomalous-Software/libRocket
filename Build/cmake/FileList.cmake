@@ -347,6 +347,7 @@ set(Controls_PUB_HDR_FILES
     ${PROJECT_SOURCE_DIR}/Include/Rocket/Controls/ElementFormControlInput.h
     ${PROJECT_SOURCE_DIR}/Include/Rocket/Controls/ElementFormControlSelect.h
     ${PROJECT_SOURCE_DIR}/Include/Rocket/Controls/ElementFormControlTextArea.h
+	${PROJECT_SOURCE_DIR}/Include/Rocket/Controls/ElementLabel.h
     ${PROJECT_SOURCE_DIR}/Include/Rocket/Controls/ElementTabSet.h
     ${PROJECT_SOURCE_DIR}/Include/Rocket/Controls/Header.h
     ${PROJECT_SOURCE_DIR}/Include/Rocket/Controls/SelectOption.h
@@ -369,6 +370,7 @@ set(Controls_SRC_FILES
     ${PROJECT_SOURCE_DIR}/Source/Controls/ElementFormControlInput.cpp
     ${PROJECT_SOURCE_DIR}/Source/Controls/ElementFormControlSelect.cpp
     ${PROJECT_SOURCE_DIR}/Source/Controls/ElementFormControlTextArea.cpp
+	${PROJECT_SOURCE_DIR}/Source/Controls/ElementLabel.cpp
     ${PROJECT_SOURCE_DIR}/Source/Controls/ElementTabSet.cpp
     ${PROJECT_SOURCE_DIR}/Source/Controls/ElementTextSelection.cpp
     ${PROJECT_SOURCE_DIR}/Source/Controls/InputType.cpp
