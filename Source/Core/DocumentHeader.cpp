@@ -29,6 +29,7 @@
 #include "DocumentHeader.h"
 #include "XMLParseTools.h"
 #include "../../Include/Rocket/Core.h"
+#include <iterator>
 
 namespace Rocket {
 namespace Core {
