@@ -1,1 +1,1 @@
-../../../bin/rocket.py
+link ../../../bin/rocket.py
