@@ -14,10 +14,12 @@ ElementLabel::~ElementLabel()
 
 void ElementLabel::ProcessEvent(Core::Event& event)
 {
-	bool fireToBaseClass = true;
 	// Detect click events
 	if (event.GetTargetElement() == this &&	(event == "click"))
 	{
+		//Note that we have to loop since the ElementFormControlInput class does not pass its OnChildAdded to the superclass.
+		//We don't want to modify things too much, so we will just loop when clicked searching for the child input, not really
+		//a big deal.
 		int childCount = this->GetNumChildren();
 		Core::Element* child;
 		for (int i = 0; i < childCount; ++i)
@@ -31,10 +33,7 @@ void ElementLabel::ProcessEvent(Core::Event& event)
 		}
 	}
 
-	if (fireToBaseClass)
-	{
-		Element::ProcessEvent(event);
-	}
+	Element::ProcessEvent(event);
 }
 
 }
