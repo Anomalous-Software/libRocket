@@ -1,7 +1,6 @@
 #ifndef ROCKETCONTROLELEMENTLABEL_H
 #define ROCKETCONTROLELEMENTLABEL_H
 
-#include "../../Include/Rocket/Core/EventListener.h"
 #include "../Core/Element.h"
 #include "Header.h"
 
