@@ -41,6 +41,7 @@
 #include "ElementFormControlTextArea.h"
 #include "ElementTabSet.h"
 #include "SelectOption.h"
+#include "ElementLabel.h"
 
 namespace Rocket {
 namespace Controls {

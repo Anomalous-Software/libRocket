@@ -87,6 +87,10 @@ void RegisterElementInstancers()
 	instancer = new Core::ElementInstancerGeneric< ElementDataGridRow >();
 	Core::Factory::RegisterElementInstancer("#rktctl_datagridrow", instancer);
 	instancer->RemoveReference();
+
+	instancer = new Core::ElementInstancerGeneric< ElementLabel >();
+	Core::Factory::RegisterElementInstancer("label", instancer);
+	instancer->RemoveReference();
 }
 
 void RegisterXMLNodeHandlers()
